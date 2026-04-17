@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Extraction Hub</title>
+    <link rel="stylesheet" href="/static/index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    
+    <div class="glass-container">
+        <header>
+            <h1>Legal Extraction Hub</h1>
+            <p>Drag, drop, and extract case data automatically.</p>
+        </header>
+
+        <main>
+            <div class="input-group">
+                <label for="company-select">Extraction Target Style</label>
+                <select id="company-select">
+                    <option value="Speed">Speed</option>
+                    <option value="MLA">MLA</option>
+                </select>
+            </div>
+
+            <!-- Drag and Drop Zone -->
+            <div id="drop-zone" class="drop-zone">
+                <div class="drop-content">
+                    <div class="icon">📁</div>
+                    <h3>Drag & Drop Case Files or Folders Here</h3>
+                    <p>Supports .zip, .docx, .doc, .pdf and unzipped folders</p>
+                </div>
+                <input type="file" id="file-input" multiple webkitdirectory />
+            </div>
+
+            <div class="manual-upload-row">
+                <label for="fallback-file" class="btn btn-secondary">
+                    📄 Browse Files
+                </label>
+                <input type="file" id="fallback-file" multiple class="hidden" />
+                
+                <label for="fallback-folder" class="btn btn-secondary">
+                    📂 Browse Folder
+                </label>
+                <input type="file" id="fallback-folder" webkitdirectory directory multiple class="hidden" />
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading-state" class="hidden">
+                <div class="spinner"></div>
+                <p id="status-text">Processing documents...</p>
+            </div>
+
+            <!-- Details on files selected -->
+            <div id="selected-files" class="hidden">
+                <h4 id="selection-title">Selected Document</h4>
+                <ul id="file-list"></ul>
+                <button id="btn-process" class="btn btn-primary">🚀 START EXTRACTION</button>
+            </div>
+            
+            <!-- Result State -->
+            <div id="result-state" class="hidden">
+                <div class="success-icon">✅</div>
+                <h3>Extraction Complete</h3>
+                <p>Results saved successfully to the output directory.</p>
+                <button id="btn-reset" class="btn btn-outline">Process Another Case</button>
+            </div>
+
+        </main>
+    </div>
+    
+    <script src="/static/index.js"></script>
+</body>
+</html>
