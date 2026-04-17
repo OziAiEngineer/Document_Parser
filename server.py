@@ -25,9 +25,11 @@ app.add_middleware(
 
 # Ensure static and output directories exist
 os.makedirs("static", exist_ok=True)
+os.makedirs("results", exist_ok=True)
 
 # Mount static files (for UI)
 app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/results", StaticFiles(directory="results"), name="results")
 
 @app.get("/")
 async def root():
@@ -138,7 +140,21 @@ async def extract_data(
             excel=True
         )
 
-        return JSONResponse(content={"status": "success", "results": results})
+        excel_url = None
+        if company.lower() == "mla":
+            excel_url = "/results/mla_cases.xlsx"
+        elif current_mode == "folder":
+            excel_url = "/results/batch_cases.xlsx"
+        else:
+            docs = target_input if isinstance(target_input, list) else [target_input]
+            case_name = Path(docs[0]).stem if len(docs) == 1 else "merged_result"
+            excel_url = f"/results/{case_name}.xlsx"
+
+        return JSONResponse(content={
+            "status": "success", 
+            "results": results, 
+            "excel_url": excel_url
+        })
 
     except Exception as e:
         import traceback

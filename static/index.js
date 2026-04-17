@@ -198,6 +198,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const data = await response.json();
             console.log("Success:", data);
+            
+            // Handle Download Excel button
+            const downloadBtn = document.getElementById('btn-download-excel');
+            if (data.excel_url) {
+                downloadBtn.href = data.excel_url + "?t=" + new Date().getTime(); // Cache bust
+                downloadBtn.classList.remove('hidden');
+            } else {
+                downloadBtn.classList.add('hidden');
+            }
+            
             showState('result');
             
         } catch (error) {

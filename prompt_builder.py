@@ -43,10 +43,8 @@ REFERENCE MAPPING GUIDELINES:
   * If Recipient = Solicitor -> Map "Your Ref" to instructor_reference.
   * If Recipient = Agency    -> Map "Your Ref" to agency_ref.
 - CONTEXTUAL EXCEPTION: Many medical agencies quote the portal reference (starting with OIC-) as their own. If BOTH a numeric reference (e.g. 668193) and an OIC reference (e.g. OIC-01-26-3115) are present, the numeric one is usually the agency_ref and the OIC one is the instructor_reference.
-- When an "OIC-" or "OICP-" reference is the primary or only reference for the instructing party, the instructing_party name should be "OIC litigant in person" or "Official Injury Claim".
-- If the extracted "agency_name" or "instructing_party" is "OIC" → change it to "OIC litigant in person".
-
-FILTERING GENERIC/PLACEHOLDER VALUES:
+- OIC LITIGANT RULE: If a law firm or solicitor is explicitly named (e.g. "Winn Solicitors", "Exclusive Law", etc.) anywhere in the document context, they MUST be the instructing_party. Do NOT extract "OIC litigant in person" simply because the word "OIC" is mentioned.
+- ONLY set instructing_party to "OIC litigant in person" if the document is an Official Injury Claim and there is absolutely NO solicitor firm mentioned.
 - NEVER extract generic text like "New Instructions", "To whom it may concern", or "Instructions to Expert" as a reference number.
 - References usually follow patterns like 123456.789, JN/12345/MED, ABC-XYZ-123.
 - If a value looks like a descriptive phrase rather than an ID, set the field to null.
@@ -80,10 +78,11 @@ CONSULTING VENUE RULES:
 - No venue mentioned                               → consulting_venue: false
 
 APPOINTMENT TYPE RULES:
-- "Face to Face" / "In Person"    → appointment_type: "Face to Face"
-- "Remote" / "Video"              → appointment_type: "General Remote"
-- "COVID" + Remote                → appointment_type: "COVID-19 Remote"
-- Not mentioned                   → appointment_type: null
+- Read carefully to find the ACTUAL appointment method scheduled for the claimant. Do NOT blindly extract "Remote" or "COVID-19 Remote" just because standard COVID-19 guidelines or remote instructions appear in the boilerplate text.
+- If the specific appointment for this claimant is stated as "Face to Face" / "In Person" → appointment_type: "Face to Face"
+- If the specific appointment for this claimant is explicitly "Remote" / "Video" / "Telephone" → appointment_type: "General Remote"
+- If it explicitly says "COVID" + "Remote" specifically for this claimant's booking → appointment_type: "COVID-19 Remote"
+- If the actual appointment type for the claimant is not clearly stated, or if it is only mentioned in generic boilerplate guidelines → appointment_type: null
 
 INTERPRETER RULES:
 - Interpreter mentioned           → interpreter_required: true
